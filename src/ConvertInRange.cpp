@@ -30,9 +30,10 @@ class Converter : public rclcpp::Node
     {
         range_msgs::msg::Range range_converted;
 
-        range_converted.header = msg->header;
+        range_converted.header.frame_id = msg->header.frame_id;
+        range_converted.header.stamp= msg->header.stamp;
         range_converted.range  = msg->range;
-        range_converted.covariance = msg->covariance*msg->range;
+        range_converted.covariance = (msg->covariance)*(msg->range);
         int number = (msg->child_frame_id).back() - 48 - 1;
 
         publishers[number]->publish(range_converted);
